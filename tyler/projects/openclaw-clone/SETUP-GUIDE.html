@@ -1,0 +1,593 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <title>SETUP-GUIDE</title>
+  <style>
+    /* Default styles provided by pandoc.
+    ** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
+    */
+    html {
+      color: #1a1a1a;
+      background-color: #fdfdfd;
+    }
+    body {
+      margin: 0 auto;
+      max-width: 36em;
+      padding-left: 50px;
+      padding-right: 50px;
+      padding-top: 50px;
+      padding-bottom: 50px;
+      hyphens: auto;
+      overflow-wrap: break-word;
+      text-rendering: optimizeLegibility;
+      font-kerning: normal;
+    }
+    @media (max-width: 600px) {
+      body {
+        font-size: 0.9em;
+        padding: 12px;
+      }
+      h1 {
+        font-size: 1.8em;
+      }
+    }
+    @media print {
+      html {
+        background-color: white;
+      }
+      body {
+        background-color: transparent;
+        color: black;
+        font-size: 12pt;
+      }
+      p, h2, h3 {
+        orphans: 3;
+        widows: 3;
+      }
+      h2, h3, h4 {
+        page-break-after: avoid;
+      }
+    }
+    p {
+      margin: 1em 0;
+    }
+    a {
+      color: #1a1a1a;
+    }
+    a:visited {
+      color: #1a1a1a;
+    }
+    img {
+      max-width: 100%;
+    }
+    svg {
+      height: auto;
+      max-width: 100%;
+    }
+    h1, h2, h3, h4, h5, h6 {
+      margin-top: 1.4em;
+    }
+    h5, h6 {
+      font-size: 1em;
+      font-style: italic;
+    }
+    h6 {
+      font-weight: normal;
+    }
+    ol, ul {
+      padding-left: 1.7em;
+      margin-top: 1em;
+    }
+    li > ol, li > ul {
+      margin-top: 0;
+    }
+    blockquote {
+      margin: 1em 0 1em 1.7em;
+      padding-left: 1em;
+      border-left: 2px solid #e6e6e6;
+      color: #606060;
+    }
+    code {
+      font-family: Menlo, Monaco, Consolas, 'Lucida Console', monospace;
+      font-size: 85%;
+      margin: 0;
+      hyphens: manual;
+    }
+    pre {
+      margin: 1em 0;
+      overflow: auto;
+    }
+    pre code {
+      padding: 0;
+      overflow: visible;
+      overflow-wrap: normal;
+    }
+    .sourceCode {
+     background-color: transparent;
+     overflow: visible;
+    }
+    hr {
+      border: none;
+      border-top: 1px solid #1a1a1a;
+      height: 1px;
+      margin: 1em 0;
+    }
+    table {
+      margin: 1em 0;
+      border-collapse: collapse;
+      width: 100%;
+      overflow-x: auto;
+      display: block;
+      font-variant-numeric: lining-nums tabular-nums;
+    }
+    table caption {
+      margin-bottom: 0.75em;
+    }
+    tbody {
+      margin-top: 0.5em;
+      border-top: 1px solid #1a1a1a;
+      border-bottom: 1px solid #1a1a1a;
+    }
+    th {
+      border-top: 1px solid #1a1a1a;
+      padding: 0.25em 0.5em 0.25em 0.5em;
+    }
+    td {
+      padding: 0.125em 0.5em 0.25em 0.5em;
+    }
+    header {
+      margin-bottom: 4em;
+      text-align: center;
+    }
+    #TOC li {
+      list-style: none;
+    }
+    #TOC ul {
+      padding-left: 1.3em;
+    }
+    #TOC > ul {
+      padding-left: 0;
+    }
+    #TOC a:not(:hover) {
+      text-decoration: none;
+    }
+    code{white-space: pre-wrap;}
+    span.smallcaps{font-variant: small-caps;}
+    div.columns{display: flex; gap: min(4vw, 1.5em);}
+    div.column{flex: auto; overflow-x: auto;}
+    div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+    /* The extra [class] is a hack that increases specificity enough to
+       override a similar rule in reveal.js */
+    ul.task-list[class]{list-style: none;}
+    ul.task-list li input[type="checkbox"] {
+      font-size: inherit;
+      width: 0.8em;
+      margin: 0 0.8em 0.2em -1.6em;
+      vertical-align: middle;
+    }
+    .display.math{display: block; text-align: center; margin: 0.5rem auto;}
+    /* CSS for syntax highlighting */
+    html { -webkit-text-size-adjust: 100%; }
+    pre > code.sourceCode { white-space: pre; position: relative; }
+    pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+    pre > code.sourceCode > span:empty { height: 1.2em; }
+    .sourceCode { overflow: visible; }
+    code.sourceCode > span { color: inherit; text-decoration: inherit; }
+    div.sourceCode { margin: 1em 0; }
+    pre.sourceCode { margin: 0; }
+    @media screen {
+    div.sourceCode { overflow: auto; }
+    }
+    @media print {
+    pre > code.sourceCode { white-space: pre-wrap; }
+    pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+    }
+    pre.numberSource code
+      { counter-reset: source-line 0; }
+    pre.numberSource code > span
+      { position: relative; left: -4em; counter-increment: source-line; }
+    pre.numberSource code > span > a:first-child::before
+      { content: counter(source-line);
+        position: relative; left: -1em; text-align: right; vertical-align: baseline;
+        border: none; display: inline-block;
+        -webkit-touch-callout: none; -webkit-user-select: none;
+        -khtml-user-select: none; -moz-user-select: none;
+        -ms-user-select: none; user-select: none;
+        padding: 0 4px; width: 4em;
+        color: #aaaaaa;
+      }
+    pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+    div.sourceCode
+      {   }
+    @media screen {
+    pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+    }
+    code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+    code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+    code span.at { color: #7d9029; } /* Attribute */
+    code span.bn { color: #40a070; } /* BaseN */
+    code span.bu { color: #008000; } /* BuiltIn */
+    code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+    code span.ch { color: #4070a0; } /* Char */
+    code span.cn { color: #880000; } /* Constant */
+    code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+    code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+    code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+    code span.dt { color: #902000; } /* DataType */
+    code span.dv { color: #40a070; } /* DecVal */
+    code span.er { color: #ff0000; font-weight: bold; } /* Error */
+    code span.ex { } /* Extension */
+    code span.fl { color: #40a070; } /* Float */
+    code span.fu { color: #06287e; } /* Function */
+    code span.im { color: #008000; font-weight: bold; } /* Import */
+    code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+    code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+    code span.op { color: #666666; } /* Operator */
+    code span.ot { color: #007020; } /* Other */
+    code span.pp { color: #bc7a00; } /* Preprocessor */
+    code span.sc { color: #4070a0; } /* SpecialChar */
+    code span.ss { color: #bb6688; } /* SpecialString */
+    code span.st { color: #4070a0; } /* String */
+    code span.va { color: #19177c; } /* Variable */
+    code span.vs { color: #4070a0; } /* VerbatimString */
+    code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+  </style>
+</head>
+<body>
+<h1 id="openclaw-clone-kit-setup-guide">OpenClaw Clone Kit — Setup
+Guide</h1>
+<hr />
+<h2 id="contents">Contents</h2>
+<ol type="1">
+<li>Quick Overview</li>
+<li>What You Need Before Starting</li>
+<li>Step-by-Step Setup</li>
+<li>Post-Setup Configuration</li>
+<li>Troubleshooting</li>
+</ol>
+<hr />
+<h2 id="quick-overview">1. Quick Overview</h2>
+<p>This kit sets up a complete OpenClaw system on a new Mac mini. After
+setup, you’ll have:</p>
+<ul>
+<li><strong>AI assistant named Tyler</strong> (Tyler Durden personality
+— punchy, challenges assumptions, dangerously competent)</li>
+<li><strong>Memory system</strong> that remembers conversations and
+context</li>
+<li><strong>30 skills</strong> including marketing (CRO, copywriting,
+SEO) and operational (testing, monitoring, GSC)</li>
+<li><strong>Automated tasks</strong> like email cleanup, daily
+briefings, urgent alerts</li>
+<li><strong>Multi-channel access</strong> via Telegram, Discord, or web
+interface</li>
+</ul>
+<p><strong>Time required:</strong> 30-45 minutes<br />
+<strong>Agent personality:</strong> Tyler Durden (Fight Club
+vibes)<br />
+<strong>Human name:</strong> Tyler (you’ll fill in your details)</p>
+<hr />
+<h2 id="what-you-need-before-starting">2. What You Need Before
+Starting</h2>
+<h3 id="required-accounts-api-keys">Required Accounts &amp; API
+Keys</h3>
+<table>
+<colgroup>
+<col style="width: 20%" />
+<col style="width: 39%" />
+<col style="width: 39%" />
+</colgroup>
+<thead>
+<tr>
+<th>Service</th>
+<th>Why You Need It</th>
+<th>Where to Get It</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Anthropic</strong></td>
+<td>Primary AI model (Claude)</td>
+<td>console.anthropic.com</td>
+</tr>
+<tr>
+<td><strong>OpenRouter</strong></td>
+<td>Fallback models + routing</td>
+<td>openrouter.ai/keys</td>
+</tr>
+<tr>
+<td><strong>OpenAI</strong></td>
+<td>Memory search (embeddings)</td>
+<td>platform.openai.com</td>
+</tr>
+<tr>
+<td><strong>Telegram</strong></td>
+<td>Chat interface for your agent</td>
+<td><span class="citation" data-cites="BotFather">@BotFather</span> on
+Telegram</td>
+</tr>
+</tbody>
+</table>
+<h3 id="optional-but-recommended">Optional (But Recommended)</h3>
+<table>
+<thead>
+<tr>
+<th>Service</th>
+<th>What It Enables</th>
+<th>Where to Get It</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Discord</strong></td>
+<td>Alternative chat interface</td>
+<td>discord.com/developers</td>
+</tr>
+<tr>
+<td><strong>Gemini</strong></td>
+<td>AI image generation</td>
+<td>aistudio.google.com</td>
+</tr>
+<tr>
+<td><strong>Brave Search</strong></td>
+<td>Web search capability</td>
+<td>search.brave.com/api</td>
+</tr>
+</tbody>
+</table>
+<h3 id="save-these-keys">Save These Keys!</h3>
+<p>Write them down as you go — the setup script will ask for them.</p>
+<hr />
+<h2 id="step-by-step-setup">3. Step-by-Step Setup</h2>
+<h3 id="step-1-install-prerequisites">Step 1: Install Prerequisites</h3>
+<h4 id="install-homebrew-package-manager">Install Homebrew (Package
+Manager)</h4>
+<ol type="1">
+<li>Open <strong>Terminal</strong> (Applications → Utilities)</li>
+<li>Paste this command and press Return:</li>
+</ol>
+<div class="sourceCode" id="cb1"><pre
+class="sourceCode bash"><code class="sourceCode bash"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="ex">/bin/bash</span> <span class="at">-c</span> <span class="st">&quot;</span><span class="va">$(</span><span class="ex">curl</span> <span class="at">-fsSL</span> https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh<span class="va">)</span><span class="st">&quot;</span></span></code></pre></div>
+<ol start="3" type="1">
+<li>Follow the prompts (press Return when asked)</li>
+<li>Add Homebrew to your PATH:</li>
+</ol>
+<div class="sourceCode" id="cb2"><pre
+class="sourceCode bash"><code class="sourceCode bash"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="bu">echo</span> <span class="st">&#39;eval &quot;$(/opt/homebrew/bin/brew shellenv)&quot;&#39;</span> <span class="op">&gt;&gt;</span> ~/.zprofile</span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="bu">eval</span> <span class="st">&quot;</span><span class="va">$(</span><span class="ex">/opt/homebrew/bin/brew</span> shellenv<span class="va">)</span><span class="st">&quot;</span></span></code></pre></div>
+<ol start="5" type="1">
+<li>Wait for installation to complete (5-10 minutes)</li>
+</ol>
+<h4 id="install-node.js-and-github-cli">Install Node.js and GitHub
+CLI</h4>
+<div class="sourceCode" id="cb3"><pre
+class="sourceCode bash"><code class="sourceCode bash"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="ex">brew</span> install node gh</span></code></pre></div>
+<h3 id="step-2-authenticate-with-github">Step 2: Authenticate with
+GitHub</h3>
+<div class="sourceCode" id="cb4"><pre
+class="sourceCode bash"><code class="sourceCode bash"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="ex">gh</span> auth login</span></code></pre></div>
+<ul>
+<li>Choose <strong>GitHub.com</strong> → <strong>HTTPS</strong> →
+<strong>Yes</strong> (authenticate git)</li>
+<li>Choose <strong>Login with a web browser</strong></li>
+<li>Copy the one-time code from Terminal, paste it in the browser</li>
+<li>Complete login (use your normal GitHub sign-in method)</li>
+</ul>
+<h3 id="step-3-get-your-api-keys">Step 3: Get Your API Keys</h3>
+<h4 id="anthropic-api-key">Anthropic API Key</h4>
+<ol type="1">
+<li>Go to <strong>console.anthropic.com</strong></li>
+<li>Sign up or log in</li>
+<li>Click “Get API keys” or “Create new key”</li>
+<li>Copy the key (starts with <code>sk-ant-</code>)</li>
+<li><strong>Save it</strong> — you’ll paste it into the script</li>
+</ol>
+<h4 id="openrouter-api-key">OpenRouter API Key</h4>
+<ol type="1">
+<li>Go to <strong>openrouter.ai/keys</strong></li>
+<li>Sign up or log in</li>
+<li>Click “Create new key”</li>
+<li>Copy the key (starts with <code>sk-or-v1-</code>)</li>
+<li><strong>Save it</strong></li>
+</ol>
+<h4 id="openai-api-key">OpenAI API Key</h4>
+<ol type="1">
+<li>Go to <strong>platform.openai.com</strong></li>
+<li>Sign up or log in</li>
+<li>Go to API keys section</li>
+<li>Click “Create new secret key”</li>
+<li>Copy the key (starts with <code>sk-</code>)</li>
+<li><strong>Save it immediately</strong> — OpenAI only shows it
+once!</li>
+</ol>
+<h4 id="telegram-bot-token">Telegram Bot Token</h4>
+<ol type="1">
+<li>Open <strong>Telegram</strong> on your phone or computer</li>
+<li>Search for <strong><span class="citation"
+data-cites="BotFather">@BotFather</span></strong></li>
+<li>Start a chat and type: <code>/newbot</code></li>
+<li>Follow prompts:
+<ul>
+<li>Name your bot (e.g., “Tyler”)</li>
+<li>Choose a username ending in “bot” (e.g.,
+<code>tyler_assistant_bot</code>)</li>
+</ul></li>
+<li>BotFather will give you a token (long string of letters and
+numbers)</li>
+<li><strong>Save it</strong> — this is how your agent receives
+messages</li>
+</ol>
+<h3 id="step-4-clone-the-workspace">Step 4: Clone the Workspace</h3>
+<div class="sourceCode" id="cb5"><pre
+class="sourceCode bash"><code class="sourceCode bash"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="fu">git</span> clone https://github.com/13Guinness/openclaw-workspace-template ~/.openclaw/workspace</span></code></pre></div>
+<h3 id="step-5-run-setup">Step 5: Run Setup</h3>
+<div class="sourceCode" id="cb6"><pre
+class="sourceCode bash"><code class="sourceCode bash"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="bu">cd</span> ~/.openclaw/workspace/elon/projects/openclaw-clone</span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a><span class="ex">./setup.sh</span></span></code></pre></div>
+<p><strong>Enter your API keys when prompted:</strong> - Paste each key
+and press Return - For optional items, just press Return to skip</p>
+<p>Wait for setup to complete (5-10 minutes).</p>
+<p><strong>Save the credentials shown at the end!</strong> - Gateway
+token - Gateway password - Dashboard URL</p>
+<h3 id="step-6-run-post-setup">Step 6: Run Post-Setup</h3>
+<div class="sourceCode" id="cb7"><pre
+class="sourceCode bash"><code class="sourceCode bash"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="ex">./post-setup.sh</span></span></code></pre></div>
+<p>This sets up: - Automated jobs (daily briefing, email cleanup, urgent
+alerts) - Memory monitoring - Screenshot sync - Optional life-audit-app
+(if you want it locally)</p>
+<h3 id="step-7-configure-telegram">Step 7: Configure Telegram</h3>
+<ol type="1">
+<li>Open Telegram</li>
+<li>Search for your bot (the username you created, e.g.,
+<code>@tyler_assistant_bot</code>)</li>
+<li>Send: <code>/start</code></li>
+<li>Your agent should respond! Try: “Hello, what time is it?”</li>
+</ol>
+<h3 id="step-8-customize-your-agent">Step 8: Customize Your Agent</h3>
+<p>Edit these files in TextEdit (or any text editor):</p>
+<ol type="1">
+<li><strong>IDENTITY.md</strong> — Agent identity is already set to
+“Tyler” (leave as-is)</li>
+<li><strong>USER.md</strong> — Fill in YOUR details (name: Tyler, your
+preferences, timezone)</li>
+<li><strong>SOUL.md</strong> — Agent personality is already Tyler Durden
+(leave as-is unless you want tweaks)</li>
+</ol>
+<p>Files are located at: <code>~/.openclaw/workspace/</code></p>
+<hr />
+<h2 id="post-setup-configuration">4. Post-Setup Configuration</h2>
+<h3 id="optional-run-first-steps-onboarding">Optional: Run First-Steps
+Onboarding</h3>
+<div class="sourceCode" id="cb8"><pre
+class="sourceCode bash"><code class="sourceCode bash"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="ex">./scripts/first-steps-onboarding.sh</span></span></code></pre></div>
+<p>This interactive script will: - Ask about your work and daily
+routines - Suggest 3 simple automations - Set up the ones you want
+immediately</p>
+<h3 id="optional-install-claude-mem-plugin">Optional: Install claude-mem
+Plugin</h3>
+<p>For better memory (recommended):</p>
+<div class="sourceCode" id="cb9"><pre
+class="sourceCode bash"><code class="sourceCode bash"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="ex">openclaw</span> plugin install claude-mem</span></code></pre></div>
+<hr />
+<h2 id="troubleshooting">5. Troubleshooting</h2>
+<h3 id="command-not-found-brew">“command not found: brew”</h3>
+<p>Homebrew didn’t install correctly. Try:</p>
+<div class="sourceCode" id="cb10"><pre
+class="sourceCode bash"><code class="sourceCode bash"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="ex">/bin/bash</span> <span class="at">-c</span> <span class="st">&quot;</span><span class="va">$(</span><span class="ex">curl</span> <span class="at">-fsSL</span> https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh<span class="va">)</span><span class="st">&quot;</span></span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a><span class="bu">echo</span> <span class="st">&#39;eval &quot;$(/opt/homebrew/bin/brew shellenv)&quot;&#39;</span> <span class="op">&gt;&gt;</span> ~/.zprofile</span>
+<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a><span class="bu">eval</span> <span class="st">&quot;</span><span class="va">$(</span><span class="ex">/opt/homebrew/bin/brew</span> shellenv<span class="va">)</span><span class="st">&quot;</span></span></code></pre></div>
+<h3 id="permission-denied-when-running-setup.sh">“Permission denied”
+when running setup.sh</h3>
+<p>Make the script executable:</p>
+<div class="sourceCode" id="cb11"><pre
+class="sourceCode bash"><code class="sourceCode bash"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="fu">chmod</span> +x setup.sh</span>
+<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a><span class="ex">./setup.sh</span></span></code></pre></div>
+<h3 id="telegram-bot-not-responding">Telegram bot not responding</h3>
+<ol type="1">
+<li>Check that you copied the bot token correctly</li>
+<li>Verify the token in <code>~/.openclaw/openclaw.json</code></li>
+<li>Try sending <code>/start</code> again</li>
+<li>Check that gateway is running:
+<code>openclaw gateway status</code></li>
+</ol>
+<h3 id="gateway-wont-start">Gateway won’t start</h3>
+<p>Check logs:</p>
+<div class="sourceCode" id="cb12"><pre
+class="sourceCode bash"><code class="sourceCode bash"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="fu">cat</span> ~/.openclaw/logs/gateway.err.log</span></code></pre></div>
+<p>Common issues: - Missing API key - Port 18789 already in use -
+Node.js not installed</p>
+<h3 id="need-to-restart-gateway">Need to restart gateway</h3>
+<div class="sourceCode" id="cb13"><pre
+class="sourceCode bash"><code class="sourceCode bash"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="ex">launchctl</span> unload ~/Library/LaunchAgents/ai.openclaw.gateway.plist</span>
+<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a><span class="ex">launchctl</span> load ~/Library/LaunchAgents/ai.openclaw.gateway.plist</span></code></pre></div>
+<hr />
+<h2 id="quick-reference">Quick Reference</h2>
+<h3 id="daily-use">Daily Use</h3>
+<table>
+<thead>
+<tr>
+<th>What You Want</th>
+<th>What to Type</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Check email</td>
+<td>“check my email”</td>
+</tr>
+<tr>
+<td>Daily briefing</td>
+<td>“what’s my daily briefing?”</td>
+</tr>
+<tr>
+<td>Search web</td>
+<td>“search for [topic]”</td>
+</tr>
+<tr>
+<td>Summarize article</td>
+<td>“summarize this [URL]”</td>
+</tr>
+<tr>
+<td>Check calendar</td>
+<td>“what’s on my schedule today?”</td>
+</tr>
+</tbody>
+</table>
+<h3 id="file-locations">File Locations</h3>
+<table>
+<thead>
+<tr>
+<th>What</th>
+<th>Where</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Config</td>
+<td><code>~/.openclaw/openclaw.json</code></td>
+</tr>
+<tr>
+<td>Workspace</td>
+<td><code>~/.openclaw/workspace/</code></td>
+</tr>
+<tr>
+<td>Memory</td>
+<td><code>~/.openclaw/workspace/memory/</code></td>
+</tr>
+<tr>
+<td>Logs</td>
+<td><code>~/.openclaw/logs/</code></td>
+</tr>
+<tr>
+<td>Dashboard</td>
+<td>http://localhost:18789</td>
+</tr>
+</tbody>
+</table>
+<h3 id="useful-commands">Useful Commands</h3>
+<div class="sourceCode" id="cb14"><pre
+class="sourceCode bash"><code class="sourceCode bash"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Check gateway status</span></span>
+<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a><span class="ex">openclaw</span> gateway status</span>
+<span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-4"><a href="#cb14-4" aria-hidden="true" tabindex="-1"></a><span class="co"># View gateway logs</span></span>
+<span id="cb14-5"><a href="#cb14-5" aria-hidden="true" tabindex="-1"></a><span class="fu">tail</span> <span class="at">-f</span> ~/.openclaw/logs/gateway.log</span>
+<span id="cb14-6"><a href="#cb14-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-7"><a href="#cb14-7" aria-hidden="true" tabindex="-1"></a><span class="co"># Restart gateway</span></span>
+<span id="cb14-8"><a href="#cb14-8" aria-hidden="true" tabindex="-1"></a><span class="ex">launchctl</span> unload ~/Library/LaunchAgents/ai.openclaw.gateway.plist <span class="kw">&amp;&amp;</span> <span class="ex">launchctl</span> load ~/Library/LaunchAgents/ai.openclaw.gateway.plist</span>
+<span id="cb14-9"><a href="#cb14-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-10"><a href="#cb14-10" aria-hidden="true" tabindex="-1"></a><span class="co"># Check cron jobs</span></span>
+<span id="cb14-11"><a href="#cb14-11" aria-hidden="true" tabindex="-1"></a><span class="ex">openclaw</span> cron list</span>
+<span id="cb14-12"><a href="#cb14-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-13"><a href="#cb14-13" aria-hidden="true" tabindex="-1"></a><span class="co"># Git sync workspace</span></span>
+<span id="cb14-14"><a href="#cb14-14" aria-hidden="true" tabindex="-1"></a><span class="bu">cd</span> ~/.openclaw/workspace <span class="kw">&amp;&amp;</span> <span class="fu">git</span> add <span class="at">-A</span> <span class="kw">&amp;&amp;</span> <span class="fu">git</span> commit <span class="at">-m</span> <span class="st">&quot;update&quot;</span> <span class="kw">&amp;&amp;</span> <span class="fu">git</span> push</span></code></pre></div>
+<hr />
+<p><strong>Version:</strong> 2026.2.19<br />
+<strong>Agent:</strong> Tyler (Tyler Durden personality)<br />
+<strong>Template:</strong>
+https://github.com/13Guinness/openclaw-workspace-template<br />
+<strong>Questions?</strong> Ask your agent: “Help me troubleshoot
+setup”</p>
+</body>
+</html>

@@ -1,0 +1,979 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>SEO Report — {{CLIENT_NAME}} — {{REPORT_MONTH}} {{REPORT_YEAR}}</title>
+  <style>
+    /* =========================================================
+       CSS Variables — override for brand customization
+       ========================================================= */
+    :root {
+      --color-primary:     {{BRAND_COLOR}};
+      --color-accent:      {{ACCENT_COLOR}};
+      --color-primary-10:  color-mix(in srgb, {{BRAND_COLOR}} 10%, white);
+      --color-accent-10:   color-mix(in srgb, {{ACCENT_COLOR}} 10%, white);
+      --color-bg:          #f4f5f7;
+      --color-surface:     #ffffff;
+      --color-border:      #e2e6ea;
+      --color-text:        #1e2128;
+      --color-muted:       #6b7280;
+      --color-positive:    #16a34a;
+      --color-negative:    #dc2626;
+      --color-warning:     #d97706;
+      --color-critical:    #dc2626;
+      --color-notice:      #2563eb;
+      --font-sans:         'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+      --font-mono:         'JetBrains Mono', 'Fira Code', 'Courier New', monospace;
+      --radius-sm:         4px;
+      --radius-md:         8px;
+      --radius-lg:         12px;
+      --shadow-card:       0 1px 3px rgba(0,0,0,.08), 0 4px 12px rgba(0,0,0,.05);
+    }
+
+    /* =========================================================
+       Reset & Base
+       ========================================================= */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    html { font-size: 15px; }
+
+    body {
+      font-family: var(--font-sans);
+      background: var(--color-bg);
+      color: var(--color-text);
+      line-height: 1.6;
+      -webkit-print-color-adjust: exact;
+      print-color-adjust: exact;
+    }
+
+    a { color: var(--color-primary); text-decoration: none; }
+    a:hover { text-decoration: underline; }
+
+    /* =========================================================
+       Page Layout
+       ========================================================= */
+    .page-wrapper {
+      max-width: 960px;
+      margin: 0 auto;
+      padding: 0 0 60px;
+    }
+
+    /* =========================================================
+       Cover Page
+       ========================================================= */
+    .cover {
+      background: var(--color-primary);
+      color: #fff;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      padding: 64px 72px;
+      page-break-after: always;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .cover::before {
+      content: '';
+      position: absolute;
+      top: -120px;
+      right: -120px;
+      width: 480px;
+      height: 480px;
+      border-radius: 50%;
+      background: var(--color-accent);
+      opacity: .12;
+    }
+
+    .cover::after {
+      content: '';
+      position: absolute;
+      bottom: -80px;
+      left: -80px;
+      width: 360px;
+      height: 360px;
+      border-radius: 50%;
+      background: var(--color-accent);
+      opacity: .08;
+    }
+
+    .cover-top {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+    }
+
+    .agency-brand {
+      font-size: .75rem;
+      font-weight: 700;
+      letter-spacing: .12em;
+      text-transform: uppercase;
+      opacity: .7;
+    }
+
+    .cover-main {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      padding: 80px 0 40px;
+      position: relative;
+      z-index: 1;
+    }
+
+    .cover-label {
+      font-size: .75rem;
+      font-weight: 600;
+      letter-spacing: .14em;
+      text-transform: uppercase;
+      color: var(--color-accent);
+      margin-bottom: 20px;
+    }
+
+    .cover-client {
+      font-size: 3.5rem;
+      font-weight: 800;
+      line-height: 1.1;
+      letter-spacing: -.02em;
+      margin-bottom: 16px;
+    }
+
+    .cover-domain {
+      font-size: 1.1rem;
+      font-weight: 400;
+      opacity: .65;
+      margin-bottom: 48px;
+    }
+
+    .cover-divider {
+      width: 64px;
+      height: 4px;
+      background: var(--color-accent);
+      border-radius: 2px;
+      margin-bottom: 48px;
+    }
+
+    .cover-period {
+      font-size: 1.6rem;
+      font-weight: 700;
+    }
+
+    .cover-subtitle {
+      font-size: .9rem;
+      opacity: .6;
+      margin-top: 6px;
+    }
+
+    .cover-bottom {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-end;
+      position: relative;
+      z-index: 1;
+    }
+
+    .cover-generated {
+      font-size: .75rem;
+      opacity: .5;
+    }
+
+    .client-logo {
+      max-height: 56px;
+      max-width: 160px;
+      object-fit: contain;
+      filter: brightness(0) invert(1);
+    }
+
+    .logo-text {
+      font-size: 1.25rem;
+      font-weight: 700;
+      opacity: .85;
+    }
+
+    /* =========================================================
+       Report Header (repeated pages)
+       ========================================================= */
+    .report-header {
+      background: var(--color-primary);
+      color: #fff;
+      padding: 20px 40px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .report-header-title {
+      font-size: .85rem;
+      font-weight: 600;
+      opacity: .8;
+    }
+
+    .report-header-period {
+      font-size: .85rem;
+      font-weight: 700;
+      opacity: .9;
+    }
+
+    /* =========================================================
+       Report Sections
+       ========================================================= */
+    .report-section {
+      margin: 32px 40px 0;
+    }
+
+    .section-header {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 20px;
+      padding-bottom: 12px;
+      border-bottom: 2px solid var(--color-border);
+    }
+
+    .section-number {
+      width: 28px;
+      height: 28px;
+      background: var(--color-primary);
+      color: #fff;
+      border-radius: 50%;
+      font-size: .75rem;
+      font-weight: 700;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+
+    .section-title {
+      font-size: 1.15rem;
+      font-weight: 700;
+      color: var(--color-primary);
+      letter-spacing: -.01em;
+    }
+
+    /* =========================================================
+       Cards & KPI Tiles
+       ========================================================= */
+    .card {
+      background: var(--color-surface);
+      border-radius: var(--radius-lg);
+      box-shadow: var(--shadow-card);
+      padding: 24px;
+    }
+
+    .kpi-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 16px;
+    }
+
+    .kpi-card {
+      background: var(--color-surface);
+      border-radius: var(--radius-lg);
+      box-shadow: var(--shadow-card);
+      padding: 20px 22px;
+      border-top: 3px solid var(--color-primary);
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+
+    .kpi-label {
+      font-size: .7rem;
+      font-weight: 600;
+      letter-spacing: .1em;
+      text-transform: uppercase;
+      color: var(--color-muted);
+    }
+
+    .kpi-value {
+      font-size: 2rem;
+      font-weight: 800;
+      color: var(--color-text);
+      letter-spacing: -.02em;
+      line-height: 1;
+    }
+
+    .kpi-footer {
+      font-size: .75rem;
+      color: var(--color-muted);
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    /* =========================================================
+       Delta indicators
+       ========================================================= */
+    .delta {
+      display: inline-flex;
+      align-items: center;
+      gap: 3px;
+      font-size: .78rem;
+      font-weight: 700;
+      padding: 2px 7px;
+      border-radius: 100px;
+    }
+
+    .delta.positive {
+      color: var(--color-positive);
+      background: #dcfce7;
+    }
+
+    .delta.negative {
+      color: var(--color-negative);
+      background: #fee2e2;
+    }
+
+    .delta.neutral {
+      color: var(--color-muted);
+      background: #f1f5f9;
+    }
+
+    /* =========================================================
+       Tables
+       ========================================================= */
+    .table-wrap {
+      background: var(--color-surface);
+      border-radius: var(--radius-lg);
+      box-shadow: var(--shadow-card);
+      overflow: hidden;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: .85rem;
+    }
+
+    thead {
+      background: var(--color-primary);
+      color: #fff;
+    }
+
+    thead th {
+      padding: 12px 16px;
+      text-align: left;
+      font-weight: 600;
+      font-size: .72rem;
+      letter-spacing: .08em;
+      text-transform: uppercase;
+      white-space: nowrap;
+    }
+
+    tbody tr {
+      border-bottom: 1px solid var(--color-border);
+      transition: background .1s;
+    }
+
+    tbody tr:last-child { border-bottom: none; }
+
+    tbody tr:nth-child(even) { background: #fafbfc; }
+
+    tbody td {
+      padding: 11px 16px;
+      vertical-align: middle;
+      color: var(--color-text);
+    }
+
+    .url-cell {
+      font-family: var(--font-mono);
+      font-size: .78rem;
+      color: var(--color-primary);
+      max-width: 280px;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+
+    .pos-cell {
+      text-align: center;
+      font-weight: 600;
+    }
+
+    .change-cell {
+      text-align: center;
+      font-weight: 700;
+    }
+
+    .change-cell.positive { color: var(--color-positive); }
+    .change-cell.negative { color: var(--color-negative); }
+    .change-cell.neutral  { color: var(--color-muted); }
+
+    /* =========================================================
+       Badges
+       ========================================================= */
+    .badge {
+      display: inline-block;
+      padding: 2px 10px;
+      border-radius: 100px;
+      font-size: .7rem;
+      font-weight: 700;
+      letter-spacing: .04em;
+      text-transform: uppercase;
+    }
+
+    .badge-critical { background: #fee2e2; color: var(--color-critical); }
+    .badge-warning  { background: #fef9c3; color: var(--color-warning); }
+    .badge-notice   { background: #dbeafe; color: var(--color-notice); }
+
+    tr.severity-critical td:first-child { border-left: 3px solid var(--color-critical); }
+    tr.severity-warning  td:first-child { border-left: 3px solid var(--color-warning); }
+    tr.severity-notice   td:first-child { border-left: 3px solid var(--color-notice); }
+
+    /* =========================================================
+       Health Score Ring
+       ========================================================= */
+    .health-row {
+      display: flex;
+      gap: 24px;
+      align-items: stretch;
+    }
+
+    .health-score-card {
+      background: var(--color-surface);
+      border-radius: var(--radius-lg);
+      box-shadow: var(--shadow-card);
+      padding: 28px 32px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      min-width: 200px;
+      gap: 12px;
+    }
+
+    .score-ring {
+      position: relative;
+      width: 100px;
+      height: 100px;
+    }
+
+    .score-ring svg {
+      transform: rotate(-90deg);
+    }
+
+    .score-ring .ring-bg {
+      fill: none;
+      stroke: var(--color-border);
+      stroke-width: 8;
+    }
+
+    .score-ring .ring-fill {
+      fill: none;
+      stroke: {{HEALTH_COLOR}};
+      stroke-width: 8;
+      stroke-linecap: round;
+      stroke-dasharray: 251.2;
+      stroke-dashoffset: calc(251.2 - (251.2 * {{HEALTH_SCORE}} / 100));
+      transition: stroke-dashoffset 1s ease;
+    }
+
+    .score-center {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      text-align: center;
+    }
+
+    .score-number {
+      font-size: 1.6rem;
+      font-weight: 800;
+      color: {{HEALTH_COLOR}};
+      line-height: 1;
+    }
+
+    .score-label {
+      font-size: .62rem;
+      font-weight: 600;
+      letter-spacing: .06em;
+      text-transform: uppercase;
+      color: var(--color-muted);
+    }
+
+    .health-label {
+      font-size: .8rem;
+      font-weight: 600;
+      color: var(--color-muted);
+    }
+
+    .error-counts {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      flex: 1;
+    }
+
+    .error-count-card {
+      background: var(--color-surface);
+      border-radius: var(--radius-md);
+      box-shadow: var(--shadow-card);
+      padding: 16px 20px;
+      display: flex;
+      align-items: center;
+      gap: 16px;
+    }
+
+    .error-dot {
+      width: 12px;
+      height: 12px;
+      border-radius: 50%;
+      flex-shrink: 0;
+    }
+
+    .dot-critical { background: var(--color-critical); }
+    .dot-warning  { background: var(--color-warning); }
+    .dot-notice   { background: var(--color-notice); }
+
+    .error-count-label {
+      font-size: .78rem;
+      color: var(--color-muted);
+      flex: 1;
+    }
+
+    .error-count-value {
+      font-size: 1.4rem;
+      font-weight: 800;
+      color: var(--color-text);
+    }
+
+    /* =========================================================
+       Executive Summary
+       ========================================================= */
+    .exec-bullets {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .exec-bullets li {
+      display: flex;
+      align-items: flex-start;
+      gap: 12px;
+      padding: 12px 16px;
+      background: var(--color-bg);
+      border-radius: var(--radius-md);
+      font-size: .9rem;
+      line-height: 1.5;
+    }
+
+    .exec-bullets li::before {
+      content: '';
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: var(--color-accent);
+      margin-top: 7px;
+      flex-shrink: 0;
+    }
+
+    /* =========================================================
+       Recommendations & Next Steps
+       ========================================================= */
+    .action-list {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .action-list li {
+      display: flex;
+      align-items: flex-start;
+      gap: 14px;
+      background: var(--color-surface);
+      border-radius: var(--radius-md);
+      box-shadow: var(--shadow-card);
+      padding: 14px 18px;
+      font-size: .88rem;
+      line-height: 1.5;
+      counter-increment: action-counter;
+    }
+
+    .action-list li::before {
+      content: counter(action-counter);
+      min-width: 26px;
+      height: 26px;
+      background: var(--color-primary);
+      color: #fff;
+      border-radius: 50%;
+      font-size: .72rem;
+      font-weight: 700;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+
+    ol.action-list { counter-reset: action-counter; }
+
+    .next-steps-list li::before {
+      background: var(--color-accent);
+    }
+
+    /* =========================================================
+       Footer
+       ========================================================= */
+    .report-footer {
+      margin: 48px 40px 0;
+      padding-top: 20px;
+      border-top: 1px solid var(--color-border);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .footer-brand {
+      font-size: .78rem;
+      font-weight: 700;
+      color: var(--color-primary);
+      letter-spacing: .04em;
+    }
+
+    .footer-meta {
+      font-size: .72rem;
+      color: var(--color-muted);
+    }
+
+    /* =========================================================
+       Section spacers
+       ========================================================= */
+    .section-gap { margin-top: 28px; }
+
+    /* =========================================================
+       Print Styles
+       ========================================================= */
+    @media print {
+      @page {
+        size: A4;
+        margin: 0;
+      }
+
+      html { font-size: 13px; }
+
+      body { background: #fff; }
+
+      .cover {
+        min-height: 100vh;
+        height: 297mm;
+        page-break-after: always;
+      }
+
+      .report-section {
+        page-break-inside: avoid;
+      }
+
+      .kpi-grid { grid-template-columns: repeat(4, 1fr); }
+
+      .table-wrap { page-break-inside: avoid; }
+
+      .report-header {
+        position: running(header);
+      }
+
+      a { color: inherit !important; }
+
+      .page-break { page-break-before: always; }
+
+      thead { display: table-header-group; }
+      tr     { page-break-inside: avoid; }
+    }
+
+    @media screen {
+      .page-wrapper { padding-bottom: 80px; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- ===================================================================
+     COVER PAGE
+     =================================================================== -->
+<div class="cover">
+  <div class="cover-top">
+    <div class="agency-brand">FuelVM &nbsp;·&nbsp; SEO Report</div>
+    <div>{{LOGO_HTML}}</div>
+  </div>
+
+  <div class="cover-main">
+    <div class="cover-label">Monthly Performance Report</div>
+    <div class="cover-client">{{CLIENT_NAME}}</div>
+    <div class="cover-domain">{{CLIENT_DOMAIN}}</div>
+    <div class="cover-divider"></div>
+    <div class="cover-period">{{REPORT_MONTH}} {{REPORT_YEAR}}</div>
+    <div class="cover-subtitle">Search Engine Optimization &nbsp;·&nbsp; Data through {{REPORT_MONTH}} {{REPORT_YEAR}}</div>
+  </div>
+
+  <div class="cover-bottom">
+    <div class="cover-generated">Generated {{GENERATED_DATE}} &nbsp;·&nbsp; Confidential</div>
+    <div style="font-size:.75rem;opacity:.5;">FuelVM.com</div>
+  </div>
+</div>
+
+<!-- ===================================================================
+     REPORT HEADER (visible on screen; runs on print pages via CSS)
+     =================================================================== -->
+<div class="report-header">
+  <div class="report-header-title">{{CLIENT_NAME}} &nbsp;·&nbsp; SEO Performance Report</div>
+  <div class="report-header-period">{{REPORT_MONTH}} {{REPORT_YEAR}}</div>
+</div>
+
+<div class="page-wrapper">
+
+  <!-- =================================================================
+       SECTION 1 — EXECUTIVE SUMMARY
+       ================================================================= -->
+  <section class="report-section" id="executive-summary">
+    <div class="section-header">
+      <div class="section-number">1</div>
+      <h2 class="section-title">Executive Summary</h2>
+    </div>
+    <div class="card">
+      <ul class="exec-bullets">
+        {{EXEC_SUMMARY_BULLETS}}
+      </ul>
+    </div>
+  </section>
+
+  <!-- =================================================================
+       SECTION 2 — TRAFFIC OVERVIEW (GSC KPIs)
+       ================================================================= -->
+  <section class="report-section section-gap" id="traffic-overview">
+    <div class="section-header">
+      <div class="section-number">2</div>
+      <h2 class="section-title">Traffic Overview</h2>
+    </div>
+
+    <div class="kpi-grid">
+      <!-- Clicks -->
+      <div class="kpi-card">
+        <div class="kpi-label">Organic Clicks</div>
+        <div class="kpi-value">{{CLICKS}}</div>
+        <div class="kpi-footer">
+          {{CLICKS_DELTA}}
+          <span>vs. {{PREV_MONTH}}</span>
+        </div>
+      </div>
+
+      <!-- Impressions -->
+      <div class="kpi-card">
+        <div class="kpi-label">Impressions</div>
+        <div class="kpi-value">{{IMPRESSIONS}}</div>
+        <div class="kpi-footer">
+          {{IMPRESSIONS_DELTA}}
+          <span>vs. {{PREV_MONTH}}</span>
+        </div>
+      </div>
+
+      <!-- CTR -->
+      <div class="kpi-card">
+        <div class="kpi-label">Avg. CTR</div>
+        <div class="kpi-value">{{CTR}}</div>
+        <div class="kpi-footer">
+          {{CTR_DELTA}}
+          <span>vs. {{PREV_MONTH}}</span>
+        </div>
+      </div>
+
+      <!-- Avg Position -->
+      <div class="kpi-card">
+        <div class="kpi-label">Avg. Position</div>
+        <div class="kpi-value">{{AVG_POSITION}}</div>
+        <div class="kpi-footer">
+          {{POSITION_DELTA}}
+          <span>vs. {{PREV_MONTH}}</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- =================================================================
+       SECTION 3 — TOP PAGES
+       ================================================================= -->
+  <section class="report-section section-gap" id="top-pages">
+    <div class="section-header">
+      <div class="section-number">3</div>
+      <h2 class="section-title">Top Pages by Organic Clicks</h2>
+    </div>
+
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th>Page URL</th>
+            <th>Clicks</th>
+            <th>Impressions</th>
+            <th>CTR</th>
+            <th>Avg. Position</th>
+          </tr>
+        </thead>
+        <tbody>
+          {{TOP_PAGES_ROWS}}
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <!-- =================================================================
+       SECTION 4 — TOP KEYWORDS
+       ================================================================= -->
+  <section class="report-section section-gap" id="top-keywords">
+    <div class="section-header">
+      <div class="section-number">4</div>
+      <h2 class="section-title">Top Keywords by Organic Clicks</h2>
+    </div>
+
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th>Query</th>
+            <th>Clicks</th>
+            <th>Impressions</th>
+            <th>CTR</th>
+            <th>Position</th>
+            <th>Prev. Position</th>
+          </tr>
+        </thead>
+        <tbody>
+          {{TOP_KEYWORDS_ROWS}}
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <!-- =================================================================
+       SECTION 5 — TECHNICAL HEALTH
+       ================================================================= -->
+  <section class="report-section section-gap" id="technical-health">
+    <div class="section-header">
+      <div class="section-number">5</div>
+      <h2 class="section-title">Technical Health</h2>
+    </div>
+
+    <div class="health-row">
+      <!-- Score ring -->
+      <div class="health-score-card">
+        <div class="score-ring">
+          <svg viewBox="0 0 100 100" width="100" height="100">
+            <circle class="ring-bg"   cx="50" cy="50" r="40"/>
+            <circle class="ring-fill" cx="50" cy="50" r="40"/>
+          </svg>
+          <div class="score-center">
+            <div class="score-number">{{HEALTH_SCORE}}</div>
+            <div class="score-label">/100</div>
+          </div>
+        </div>
+        <div class="health-label">Site Health</div>
+        <div>{{HEALTH_DELTA}}</div>
+      </div>
+
+      <!-- Error counts -->
+      <div class="error-counts">
+        <div class="error-count-card">
+          <div class="error-dot dot-critical"></div>
+          <div class="error-count-label">Critical Errors</div>
+          <div class="error-count-value">{{CRITICAL_ERRORS}}</div>
+        </div>
+        <div class="error-count-card">
+          <div class="error-dot dot-warning"></div>
+          <div class="error-count-label">Warnings</div>
+          <div class="error-count-value">{{WARNINGS}}</div>
+        </div>
+        <div class="error-count-card">
+          <div class="error-dot dot-notice"></div>
+          <div class="error-count-label">Notices</div>
+          <div class="error-count-value">{{NOTICES}}</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Issues table -->
+    <div class="table-wrap" style="margin-top:20px;">
+      <table>
+        <thead>
+          <tr>
+            <th>Issue</th>
+            <th>Affected Pages</th>
+            <th>Severity</th>
+          </tr>
+        </thead>
+        <tbody>
+          {{ISSUES_ROWS}}
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <!-- =================================================================
+       SECTION 6 — KEYWORD RANKINGS
+       ================================================================= -->
+  <section class="report-section section-gap" id="keyword-rankings">
+    <div class="section-header">
+      <div class="section-number">6</div>
+      <h2 class="section-title">Target Keyword Rankings</h2>
+    </div>
+
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th>Keyword</th>
+            <th style="text-align:center;">Position</th>
+            <th style="text-align:center;">Prev.</th>
+            <th style="text-align:center;">Change</th>
+            <th>Landing Page</th>
+          </tr>
+        </thead>
+        <tbody>
+          {{RANKINGS_ROWS}}
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <!-- =================================================================
+       SECTION 7 — RECOMMENDATIONS
+       ================================================================= -->
+  <section class="report-section section-gap" id="recommendations">
+    <div class="section-header">
+      <div class="section-number">7</div>
+      <h2 class="section-title">Recommendations</h2>
+    </div>
+
+    <ol class="action-list">
+      {{RECOMMENDATIONS_ITEMS}}
+    </ol>
+  </section>
+
+  <!-- =================================================================
+       SECTION 8 — NEXT STEPS
+       ================================================================= -->
+  <section class="report-section section-gap" id="next-steps">
+    <div class="section-header">
+      <div class="section-number">8</div>
+      <h2 class="section-title">Next Steps</h2>
+    </div>
+
+    <ol class="action-list next-steps-list">
+      {{NEXT_STEPS_ITEMS}}
+    </ol>
+  </section>
+
+  <!-- =================================================================
+       FOOTER
+       ================================================================= -->
+  <footer class="report-footer">
+    <div class="footer-brand">FuelVM</div>
+    <div class="footer-meta">
+      {{CLIENT_NAME}} &nbsp;·&nbsp; {{REPORT_MONTH}} {{REPORT_YEAR}} SEO Report &nbsp;·&nbsp; Confidential
+    </div>
+  </footer>
+
+</div><!-- /.page-wrapper -->
+</body>
+</html>

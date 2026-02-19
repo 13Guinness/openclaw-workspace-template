@@ -1,0 +1,125 @@
+{
+  "auth": {
+    "profiles": {
+      "anthropic:default": {
+        "provider": "anthropic",
+        "mode": "api_key"
+      }
+    }
+  },
+  "agents": {
+    "defaults": {
+      "models": {
+        "anthropic/claude-opus-4-6": {}
+      },
+      "workspace": "__WORKSPACE_PATH__",
+      "compaction": {
+        "mode": "safeguard"
+      },
+      "heartbeat": {
+        "every": "1h",
+        "model": "anthropic/claude-3-5-haiku-latest"
+      },
+      "maxConcurrent": 4,
+      "subagents": {
+        "maxConcurrent": 8
+      }
+    }
+  },
+  "tools": {
+    "web": {
+      "search": {
+        "enabled": true,
+        "apiKey": "__BRAVE_SEARCH_API_KEY__"
+      },
+      "fetch": {
+        "enabled": true
+      }
+    }
+  },
+  "messages": {
+    "ackReactionScope": "group-mentions"
+  },
+  "commands": {
+    "native": "auto",
+    "nativeSkills": "auto",
+    "restart": true
+  },
+  "session": {
+    "resetByType": {
+      "thread": {
+        "mode": "idle",
+        "idleMinutes": 525600
+      }
+    }
+  },
+  "channels": {
+    "telegram": {
+      "enabled": true,
+      "dmPolicy": "pairing",
+      "botToken": "__TELEGRAM_BOT_TOKEN__",
+      "groups": {
+        "-1003566885475": {
+          "requireMention": false,
+          "enabled": true,
+          "allowFrom": [
+            6980946764
+          ]
+        }
+      },
+      "groupPolicy": "allowlist",
+      "streamMode": "partial"
+    },
+    "discord": {
+      "enabled": true,
+      "token": "__DISCORD_BOT_TOKEN__",
+      "groupPolicy": "allowlist",
+      "guilds": {
+        "1472390631807778987": {
+          "requireMention": false,
+          "users": [
+            "1472409943616524349"
+          ],
+          "channels": {
+            "1472392527226081311": { "allow": true },
+            "1472392622508216461": { "allow": true },
+            "1472392866184564906": { "allow": true },
+            "1472392912217051230": { "allow": true },
+            "1472392946987827344": { "allow": true }
+          }
+        }
+      }
+    }
+  },
+  "gateway": {
+    "port": 18789,
+    "mode": "local",
+    "bind": "loopback",
+    "trustedProxies": [
+      "loopback"
+    ],
+    "tailscale": {
+      "mode": "off",
+      "resetOnExit": false
+    },
+    "nodes": {
+      "denyCommands": []
+    }
+  },
+  "skills": {
+    "install": {
+      "nodeManager": "npm"
+    },
+    "entries": {
+      "openai-image-gen": {
+        "apiKey": "__OPENAI_API_KEY__"
+      }
+    }
+  },
+  "plugins": {
+    "entries": {
+      "telegram": { "enabled": true },
+      "discord": { "enabled": true }
+    }
+  }
+}
