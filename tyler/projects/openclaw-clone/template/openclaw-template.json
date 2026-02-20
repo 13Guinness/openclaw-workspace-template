@@ -1,0 +1,151 @@
+{
+  "env": {
+    "OPENROUTER_API_KEY": "__OPENROUTER_API_KEY__",
+    "OPENAI_API_KEY": "__OPENAI_API_KEY__",
+    "GEMINI_API_KEY": "__GEMINI_API_KEY__",
+    "ANTHROPIC_API_KEY": "__ANTHROPIC_API_KEY__"
+  },
+  "auth": {
+    "profiles": {
+      "anthropic:default": {
+        "provider": "anthropic",
+        "mode": "api_key"
+      },
+      "openrouter:default": {
+        "provider": "openrouter",
+        "mode": "api_key"
+      }
+    }
+  },
+  "agents": {
+    "defaults": {
+      "model": {
+        "primary": "anthropic/claude-sonnet-4-6",
+        "fallbacks": [
+          "openrouter/moonshotai/kimi-k2.5",
+          "openrouter/anthropic/claude-sonnet-4.6",
+          "openrouter/google/gemini-2.0-flash-001"
+        ]
+      },
+      "models": {
+        "anthropic/claude-sonnet-4-6": {
+          "alias": "sonnet",
+          "params": {
+            "cacheRetention": "short"
+          }
+        },
+        "anthropic/claude-opus-4-6": {
+          "alias": "opus",
+          "params": {
+            "cacheRetention": "short"
+          }
+        },
+        "openrouter/anthropic/claude-sonnet-4.6": {},
+        "openrouter/anthropic/claude-opus-4.6": {},
+        "openrouter/google/gemini-2.0-flash-001": {},
+        "openrouter/moonshotai/kimi-k2.5": {
+          "alias": "kimi"
+        }
+      },
+      "workspace": "~/.openclaw/workspace",
+      "memorySearch": {
+        "enabled": true,
+        "provider": "openai",
+        "model": "text-embedding-3-small",
+        "remote": {
+          "apiKey": "__OPENAI_API_KEY__"
+        }
+      },
+      "contextPruning": {
+        "mode": "cache-ttl",
+        "ttl": "1h"
+      },
+      "compaction": {
+        "mode": "safeguard"
+      },
+      "heartbeat": {
+        "every": "1h",
+        "model": "openrouter/google/gemini-2.0-flash-001"
+      },
+      "maxConcurrent": 4,
+      "subagents": {
+        "maxConcurrent": 8,
+        "model": "openrouter/google/gemini-2.0-flash-001"
+      }
+    }
+  },
+  "tools": {
+    "web": {
+      "search": {
+        "enabled": true,
+        "apiKey": "__BRAVE_SEARCH_API_KEY__"
+      },
+      "fetch": {
+        "enabled": true
+      }
+    }
+  },
+  "messages": {
+    "ackReactionScope": "group-mentions"
+  },
+  "commands": {
+    "native": "auto",
+    "nativeSkills": "auto",
+    "restart": true
+  },
+  "session": {
+    "resetByType": {
+      "thread": {
+        "mode": "idle",
+        "idleMinutes": 525600
+      }
+    }
+  },
+  "channels": {
+    "telegram": {
+      "enabled": true,
+      "dmPolicy": "pairing",
+      "botToken": "__TELEGRAM_BOT_TOKEN__",
+      "groups": {},
+      "groupPolicy": "allowlist",
+      "streamMode": "partial"
+    },
+    "discord": {
+      "enabled": false,
+      "token": "__DISCORD_BOT_TOKEN__",
+      "groupPolicy": "allowlist",
+      "guilds": {}
+    }
+  },
+  "gateway": {
+    "port": 18789,
+    "mode": "local",
+    "bind": "lan",
+    "controlUi": {
+      "allowInsecureAuth": true
+    },
+    "auth": {
+      "mode": "token",
+      "token": "__GATEWAY_TOKEN__",
+      "password": "__GATEWAY_PASSWORD__"
+    },
+    "trustedProxies": [
+      "loopback",
+      "100.64.0.0/10"
+    ],
+    "tailscale": {
+      "mode": "off",
+      "resetOnExit": true
+    }
+  },
+  "plugins": {
+    "entries": {
+      "telegram": {
+        "enabled": true
+      },
+      "discord": {
+        "enabled": false
+      }
+    }
+  }
+}
